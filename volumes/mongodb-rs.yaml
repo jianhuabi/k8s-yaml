@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: mongodb-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      volumes:
+      - name: mongodb-data
+        hostPath:
+          path: /tmp/mongodb
+      containers:
+      - image: mongo
+        name: mongodb
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        ports:
+        - containerPort: 27017
+          protocol: TCP
